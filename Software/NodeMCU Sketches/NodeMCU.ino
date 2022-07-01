@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
+#include <string.h>
 
 
 #define UDP_PORT 4210
@@ -21,7 +22,10 @@ int i = 0;
 
 // UDP
 WiFiUDP UDP;
-char packet[255];
+// char packet[255];
+String packet;
+String pwmL;
+String pwmR;
 char reply[] = "Packet received!";
 
 void setup()
@@ -81,18 +85,21 @@ void loop()
         Serial.print("Packet received: ");
         Serial.println(packet);
 
-        int pwmL = 0;
-        int pwmR = 0;
-
-        for (i = 0; i < 3; i++)
-        {
-            pwmL = pwmL * 10 + (packet[i] - 48);
-        }
+        String pwl = s.substring(0, 3);
+        String pwr = s.substring(4, 7);
         
-        for (i = 4; i < 7; i++)
-        {
-            pwmR = pwmR * 10 + (packet[i] - 48);
-        }
+        int pwmL = pwl.toInt();
+        int pwmR = pwr.toInt();
+        
+//         for (i = 0; i < 3; i++)
+//         {
+//             pwmL = pwmL * 10 + (packet[i] - 48);
+//         }
+        
+//         for (i = 4; i < 7; i++)
+//         {
+//             pwmR = pwmR * 10 + (packet[i] - 48);
+//         }
 
         Serial.print(pwmL);
         Serial.print(",");
