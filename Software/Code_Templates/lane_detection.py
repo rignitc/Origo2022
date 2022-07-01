@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import os
 
 def thresholding(img):
     '''
@@ -85,8 +86,8 @@ def getHistogram(img, minPer=0.5, display=False, region=1):
 
     return laneCenter
 
-
-img = cv2.imread('location to lane.jpg')
+dir_path = os.path.dirname(os.path.realpath(__file__))
+img = cv2.imread(dir_path+'/lane.jpg')
 w, h = img.shape[:2]
 
 img_threshold = thresholding(img)

@@ -23,7 +23,7 @@ from traffic_sign_detection import sign_detection
 
 msgFromClient = "124,120"
 bytesToSend = str.encode(msgFromClient)
-serverAddressPort = ("192.168.43.155", 4210)  # get from the serial monitor
+serverAddressPort = ("<Enter IP Address from NodeMCU>", 4210)  # get from the serial monitor
 # bufferSize = 255
 move_forward = False
 
@@ -31,7 +31,7 @@ move_forward = False
 UDPClientSocket = socket.socket(
     family=socket.AF_INET, type=socket.SOCK_DGRAM)
 
-ip_cam_url = "http://10.148.90.95:8080/video"  # IP Camera URL
+ip_cam_url = "http://00.00.00.00:8080/video"  # IP Camera URL
 
 
 averageCurveList = []
@@ -196,7 +196,7 @@ def main():
 
             cv2.imshow('Original_image', img)
         if cv2.waitKey(1) & 0xFF == ord('q'):
-            capture.release()
+            capture.`release`()
             cv2.destroyAllWindows()
             break
 

@@ -7,11 +7,15 @@
 '''
 
 import cv2
+import os
+# get current file path
+dir_path = os.path.dirname(os.path.realpath(__file__))
 
-left = cv2.CascadeClassifier('left_blue.xml')
-right= cv2.CascadeClassifier('lright_blue.xml')
-stop = cv2.CascadeClassifier('stop.xml')
-start= cv2.CascadeClassifier('start2.xml')
+
+left = cv2.CascadeClassifier(dir_path+'/sign_left.xml')
+right= cv2.CascadeClassifier(dir_path+'/sign_right.xml')
+stop = cv2.CascadeClassifier(dir_path+'/sign_stop.xml')
+start= cv2.CascadeClassifier(dir_path+'/sign_start.xml')
 
 
 def sign_detection(img):

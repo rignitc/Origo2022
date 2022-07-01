@@ -1,5 +1,8 @@
 import cv2
 import numpy as np
+import os
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
 
 def nothing(a): # Required for the trackbar to work
     pass # Do nothing
@@ -23,6 +26,7 @@ cv2.createTrackbar("HueMax", "Trackbars", 179, 179, nothing) # create a trackbar
 #### END OF YOUR CODE ####
 
 while True:
+    
     # read the image lane,jpg
 
     image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
