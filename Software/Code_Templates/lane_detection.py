@@ -61,9 +61,9 @@ def getHistogram(img, minPer=0.5, display=False, region=1):
     
     if region == 1:
         # find the coloumn sum of entire pixels in the image
-        histValues = np.sum(img, axis=0)
+        histValues = np.sum(img, axis=0) # sum the pixels in the image
     else:
-        histValues = np.sum(img[img.shape[0] // region:, :], axis=0)
+        histValues = np.sum(img[img.shape[0] // region:, :], axis=0) # sum the pixels of specific region in the image
     #
     # print(histValues)
     maxValue = np.max(histValues)
