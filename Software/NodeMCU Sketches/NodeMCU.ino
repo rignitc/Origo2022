@@ -16,16 +16,10 @@
 const char *ssid = "<Enter SSID>"; // The SSID (name) of the Wi-Fi network you want to connect to
 const char *password = "<Enter Password>";
 
-int left_pwm = 0;
-int right_pwm = 0;
-int i = 0;
-
 // UDP
 WiFiUDP UDP;
-// char packet[255];
-String packet;
-String pwmL;
-String pwmR;
+char packet[255];
+
 char reply[] = "Packet received!";
 
 void setup()
@@ -78,12 +72,16 @@ void loop()
         Serial.print("Received packet! Size: ");
         Serial.println(packetSize);
         int len = UDP.read(packet, 255);
+        
         if (len > 0)
         {
             packet[len] = '\0';
         }
+        
         Serial.print("Packet received: ");
         Serial.println(packet);
+        
+        String s = String(packet);
 
         String pwl = s.substring(0, 3);
         String pwr = s.substring(4, 7);
@@ -91,16 +89,6 @@ void loop()
         int pwmL = pwl.toInt();
         int pwmR = pwr.toInt();
         
-//         for (i = 0; i < 3; i++)
-//         {
-//             pwmL = pwmL * 10 + (packet[i] - 48);
-//         }
-        
-//         for (i = 4; i < 7; i++)
-//         {
-//             pwmR = pwmR * 10 + (packet[i] - 48);
-//         }
-
         Serial.print(pwmL);
         Serial.print(",");
         Serial.println(pwmR);
