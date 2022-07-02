@@ -26,18 +26,15 @@ void setup()
 {
     Serial.begin(115200);
 
-    pinMode(in1, OUTPUT);
-    pinMode(in2, OUTPUT);
-    pinMode(in3, OUTPUT);
-    pinMode(in4, OUTPUT);
-    pinMode(ena, OUTPUT);
-    pinMode(enb, OUTPUT);
+    // Write your code for pinMode by defining them as OUTPUT
 
-    digitalWrite(in1, 1);
-    digitalWrite(in2, 0);
-    digitalWrite(in3, 0);
-    digitalWrite(in4, 1);
+    // pinMode defenition ends here
 
+
+    // Write your code for digitalWrite by defining state of the pins
+
+    // digitalWrite defenition ends here
+    
     Serial.println('\n');
     WiFi.begin(ssid, password); // Connect to the network
     Serial.print("Connecting to ");
@@ -93,8 +90,9 @@ void loop()
         Serial.print(",");
         Serial.println(pwmR);
 
-        analogWrite(ena, pwmL);
-        analogWrite(enb, pwmR);
+        // Write the pwm values to the motors using analogWrite
+        
+        // analogWrite code ends here
     }
     
 }
