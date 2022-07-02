@@ -69,21 +69,10 @@ def generate_pwm(diff):
     '''
     global pwmR, pwmL, prev_diff
     
-    if diff > 0:
-       
-        de = abs(prev_diff - diff)
-        pwmR = pwmR  
-        pwmL = pwmL - Kp * diff + Kd * de
-        prev_diff = diff
+    ###### Write your control logic here ####
 
-    elif diff < 0:
-        de = abs(diff - prev_diff)
-        pwmR = pwmR + Kp * diff + Kd * de
-        pwmL = pwmL 
 
-    else:
-        pwmR = pwmR
-        pwmL = pwmL
+    ###### Control logic ends here #######
 
     if (pwmL < 100):
         pwmL = "0" + str(round(pwmL))
@@ -196,7 +185,7 @@ def main():
 
             cv2.imshow('Original_image', img)
         if cv2.waitKey(1) & 0xFF == ord('q'):
-            capture.`release`()
+            capture.release()
             cv2.destroyAllWindows()
             break
 
