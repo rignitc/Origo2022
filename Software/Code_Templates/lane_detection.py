@@ -100,7 +100,7 @@ pts2 = np.float32([[0, 0], [w, 0], [0, h], [w, h]]) # points to be mapped
 matrix = cv2.getPerspectiveTransform(pts1, pts2) # get the transformation matrix
 imgWarp = cv2.warpPerspective(img_threshold, matrix, (w, h)) # warp the image
 
-imageTrackCenter, imgHist_1 = getHistogram(imgWarp, display=True, minPer=0.8, region=3)
+curveCenter, imgHist_1 = getHistogram(imgWarp, display=True, minPer=0.8, region=3)
 laneCenter, imgHist_2 = getHistogram(imgWarp, display=True, minPer=0.8)
 
 
