@@ -35,13 +35,13 @@ while True:
     hmax = cv2.getTrackbarPos("RMAX", "Trackbars") # get the trackbar position for hue max
 
     #### WRITE YOUR CODE HERE ####
-    # get the trackbar position for saturation min
+    # get the trackbar position for GMIN
 
-    # get the trackbar position for saturation max
+    # get the trackbar position for GMAX
 
-    # get the trackbar position for value min
+    # get the trackbar position for BMIN
 
-    # get the trackbar position for value max
+    # get the trackbar position for BMAX
 
     # create a lower range array
 

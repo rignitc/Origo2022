@@ -21,7 +21,6 @@ def thresholding(img):
     mask = thresholding(img)
     '''
     
-    imgHsv = cv2.cvtColor(img.copy(), cv2.COLOR_BGR2HSV) # convert the image to hsv
     lowerWhite = np.array([0, 0, 0]) # create a lower range array
     upperWhite = np.array([179, 87, 255]) # create a upper range array
     maskWhite = cv2.inRange(img.copy(), lowerWhite, upperWhite) # create a mask for the image
@@ -56,7 +55,7 @@ def getHistogram(img, minPer=0.5, display=False, region=1):
     Example call:
     ---
     imageTrackCenter, histogram = getHistogram(img , minPer=0.5, display=True, region=1)
-    laneCenter = getHistogram(img , minPer=0.8, display=False, region=4)
+    curveCenter = getHistogram(img , minPer=0.8, display=False, region=4)
     '''
 
     
@@ -70,9 +69,9 @@ def getHistogram(img, minPer=0.5, display=False, region=1):
     maxValue = np.max(histValues)
     minValue = minPer * maxValue
     
-    # imageTrackCenter ,laneCenter
+    # imageTrackCenter ,curveCenter
     indexArray = np.where(histValues >= minValue)
-    laneCenter = int(np.average(indexArray))
+    curveCenter = int(np.average(indexArray))
     
     # print(histValues)
 
@@ -81,10 +80,10 @@ def getHistogram(img, minPer=0.5, display=False, region=1):
         for x, intensity in enumerate(histValues):
             print(f"line between {x, img.shape[0]} and {x,np.int(img.shape[0] - intensity // 255 // region)}")
             cv2.line(imgHist, (x, img.shape[0]), (x, np.int(img.shape[0] - intensity // 255 // region)), (255, 0, 255),1)
-            cv2.circle(imgHist, (laneCenter, img.shape[0]), 20, (0, 255, 255), cv2.FILLED)
-        return laneCenter, imgHist
+            cv2.circle(imgHist, (curveCenter, img.shape[0]), 20, (0, 255, 255), cv2.FILLED)
+        return curveCenter, imgHist
 
-    return laneCenter
+    return curveCenter
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 img = cv2.imread(dir_path+'/lane.jpg')
@@ -101,7 +100,7 @@ matrix = cv2.getPerspectiveTransform(pts1, pts2) # get the transformation matrix
 imgWarp = cv2.warpPerspective(img_threshold, matrix, (w, h)) # warp the image
 
 curveCenter, imgHist_1 = getHistogram(imgWarp, display=True, minPer=0.8, region=3)
-laneCenter, imgHist_2 = getHistogram(imgWarp, display=True, minPer=0.8)
+curveCenter, imgHist_2 = getHistogram(imgWarp, display=True, minPer=0.8)
 
 
 cv2.imshow('image', img)

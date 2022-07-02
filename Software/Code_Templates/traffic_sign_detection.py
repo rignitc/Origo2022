@@ -74,4 +74,20 @@ def sign_detection(img):
         img = cv2.putText(img, 'left', (x,y-5), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,50,50), 2, cv2.LINE_AA)
         sign_detected="left"
 
-    return img,sign_detected    
+    return img,sign_detected
+
+
+#### COMMENT BELOW LINES IF NOT USING    
+
+ip_cam_url = "http://10.121.74.126:8080/video"
+capture = cv2.VideoCapture(ip_cam_url)
+
+
+while True:
+    ret, frame = capture.read()
+    frame = cv2.resize(frame, (640, 480))
+    img,sign_detected = sign_detection(frame)
+    cv2.imshow('frame', img)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
