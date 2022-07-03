@@ -5,7 +5,7 @@
 # Functions:        generate_pwm
 # Global variables: pwmR, pwmL, counter , midPoint, basePoint , Kp ,
 #                   ip_cam_url, base, serverAddressPort, UDPClientSocket
-                    imageTrackCenter, curveCenter
+                    imageTrackCenter, laneCenter
 '''
 
 
@@ -23,7 +23,7 @@ from traffic_sign_detection import sign_detection
 
 msgFromClient = "124,120"
 bytesToSend = str.encode(msgFromClient)
-serverAddressPort = ("<Enter IP Address from NodeMCU>", 4210)  # get from the serial monitor
+serverAddressPort = ("192.168.43.155", 4210)  # get from the serial monitor
 # bufferSize = 255
 move_forward = False
 
@@ -31,7 +31,7 @@ move_forward = False
 UDPClientSocket = socket.socket(
     family=socket.AF_INET, type=socket.SOCK_DGRAM)
 
-ip_cam_url = "http://00.00.00.00:8080/video"  # IP Camera URL
+ip_cam_url = "http://10.139.60.225:8080/video"  # IP Camera URL
 
 
 averageCurveList = []
@@ -57,7 +57,7 @@ def generate_pwm(diff):
     ---
     `imageTrackCenter` :  [ integer ]
             Average center of the track of in the image
-    `curveCenter` :  [ integer ]
+    `laneCenter` :  [ integer ]
             Center of the lane considered near the bottom of the image
 
     Returns:
@@ -69,10 +69,21 @@ def generate_pwm(diff):
     '''
     global pwmR, pwmL, prev_diff
     
-    ###### Write your control logic here ####
+    if diff > 0:
+        # check if pwmR is string
+        de = abs(prev_diff - diff)
+        pwmR = pwmR  # -0.2*diff
+        pwmL = pwmL - Kp * diff + Kd * de
+        prev_diff = diff
 
+    elif diff < 0:
+        de = abs(diff - prev_diff)
+        pwmR = pwmR + Kp * diff + Kd * de
+        pwmL = pwmL  # +0.2*diff
 
-    ###### Control logic ends here #######
+    else:
+        pwmR = pwmR
+        pwmL = pwmL
 
     if (pwmL < 100):
         pwmL = "0" + str(round(pwmL))
@@ -83,11 +94,12 @@ def generate_pwm(diff):
     else:
         pwmR = str(round(pwmR))
 
-    
+    # print(pwmL, pwmR, Kp * diff)
 
     bytesToSend = str.encode(pwmL + "," + pwmR)
     UDPClientSocket.sendto(bytesToSend, serverAddressPort)
 
+    # reset the pwmR and pwmL to 255
     pwmR = 255
     pwmL = 255
 
@@ -108,7 +120,7 @@ def main():
     main()
     '''
     global pwmR, pwmL
-    # global curveCenter, imageTrackCenter
+    # global laneCenter, imageTrackCenter
     global move_forward, sign_detected
 
     while capture.isOpened():
@@ -131,11 +143,7 @@ def main():
                 #############   STEP 1  ##################  
 
                 # apply thresholding to segment the track
-
-                #### Code starts here ####
-
-                #### Code ends here ####
-                
+                thresholded = lane_detection.thresholding(imgCopy)
                 # cv2.imshow("original_img", img )
                 cv2.imshow("thresholded", thresholded)
 
@@ -144,25 +152,36 @@ def main():
 
                 # find the points to apply the perspective transform
 
-                #### Code starts here ####
+                h ,w ,c = img.shape
+                points = [(120, 110), (640-120, 110), (0, 430), (640, 430)]  # 150 # 100
+                pts1 = np.float32(points)
 
-                #### Code ends here ####
+                # find the width and height of the perspective transform image
+
+                pts2 = np.float32([[0, 0], [w, 0], [0, h], [w, h]])
+
+                # find the perspective transform matrix
+                matrix = cv2.getPerspectiveTransform(pts1, pts2)
+
+                # apply warpPerspective to get the perspective transform image
+                imgWarp = cv2.warpPerspective(thresholded, matrix, (w, h))
+                imgWarpPoints = lane_detection.drawPoints(imgCopy, points)
 
                 cv2.imshow("imgWarp", imgWarp )
-                ``
+                cv2.imshow("imgWarpPoints", imgWarpPoints)
 
 
                 ############# STEP 3  #####################
 
                 # get the track center and the lane center
                 
-                curveCenter, imgHist1 = lane_detection.getHistogram(
+                laneCenter, imgHist1 = lane_detection.getHistogram(
                     imgWarp, display=True, minPer=0.8)
                 imageTrackCenter, imgHist2 = lane_detection.getHistogram(
                     imgWarp, display=True, minPer=0, region=4)    
 
-                diff = imageTrackCenter - curveCenter
-                 
+                diff = imageTrackCenter - laneCenter
+                #print(offset)   
 
                 cv2.imshow("imgHist1", imgHist1)
                 cv2.imshow("imgHist2", imgHist2)
