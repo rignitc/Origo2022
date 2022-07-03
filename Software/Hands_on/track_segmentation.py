@@ -28,8 +28,7 @@ cv2.createTrackbar("RMAX", "Trackbars", 255, 255, nothing) # create a trackbar f
 while True:
     
     # read the image lane,jpg
-
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    
     
     hmin = cv2.getTrackbarPos("RMIN", "Trackbars") # get the trackbar position for hue min
     hmax = cv2.getTrackbarPos("RMAX", "Trackbars") # get the trackbar position for hue max
