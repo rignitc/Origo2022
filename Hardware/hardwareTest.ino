@@ -8,11 +8,7 @@
   3: moving both of them in forward direction but the left motor slower
 */
 
-#include <ESP8266WiFi.h> // included the wifi library
-#include <WiFiUdp.h> // included the UDP library
 
-
-#define UDP_PORT 4210 //--> int UDP_PORT = 4210
 
 //renaming the pins for better identification
 #define in1 D1 // --> in1 = D1
@@ -22,21 +18,12 @@
 #define ena D6
 #define enb D7
 
-// wifi credentials
-const char ssid[] = "ORIGO22"; // The SSID (name) of the Wi-Fi network you want to connect to
-const char password[] = "rig_nitc"; //The Password of the Wi-Fi network you want to connect to
-
 // some global variables
 int pwmL = 255;
 int pwmR = 255;
 int i = 0;
 int incomingByte = 0;
 
-// UDP protocol
-WiFiUDP UDP;
-char packet[255]; //recieved packet is stored here
-char reply[] = "Communication success"; // this is the message that is returned
-//to client who sent message to this nodemcu
 
 void setup()
 {
@@ -56,28 +43,6 @@ void setup()
   digitalWrite(in2, 0);
   digitalWrite(in3, 0);
   digitalWrite(in4, 1);
-
-  // start connecting to wifi
-  Serial.println('\n');
-  WiFi.begin(ssid, password); // Connect to the network
-  Serial.print("Connecting to ");
-  Serial.print(ssid);
-  Serial.println(" ...");
-
-  int i = 0;
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    delay(500);
-    Serial.print(++i);
-    Serial.print(' ');
-  }
-  WiFi.setSleepMode(WIFI_NONE_SLEEP);
-  //WiFi.stationKeepAliveSetIntervalMs(5000);
-
-  Serial.println('\n');
-  Serial.println("Connection established!");
-  Serial.print("IP address:\t");
-  Serial.println(WiFi.localIP()); // Send the IP address of the ESP8266 to the computer
 
 
 }
