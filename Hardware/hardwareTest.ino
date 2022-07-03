@@ -106,11 +106,11 @@ void loop()
 
     case 2:
       analogWrite(ena, 255);
-      analogWrite(enb, 200);
+      analogWrite(enb, 100);
       break;
 
     case 3:
-      analogWrite(ena, 200);
+      analogWrite(ena, 100);
       analogWrite(enb, 255);
 
     default:
