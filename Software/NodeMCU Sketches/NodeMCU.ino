@@ -26,6 +26,18 @@ void setup()
 {
     Serial.begin(115200);
 
+    pinMode(in1, OUTPUT);
+    pinMode(in2, OUTPUT);
+    pinMode(in3, OUTPUT);
+    pinMode(in4, OUTPUT);
+    pinMode(ena, OUTPUT);
+    pinMode(enb, OUTPUT);
+
+    digitalWrite(in1, 1);
+    digitalWrite(in2, 0);
+    digitalWrite(in3, 0);
+    digitalWrite(in4, 1);
+
     // Write your code for pinMode by defining them as OUTPUT
 
     // pinMode defenition ends here
@@ -93,6 +105,9 @@ void loop()
         // Write the pwm values to the motors using analogWrite
         
         // analogWrite code ends here
+
+        analogWrite(ena, pwmL);
+        analogWrite(enb, pwmR);
     }
     
 }
