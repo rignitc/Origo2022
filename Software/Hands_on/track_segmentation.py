@@ -26,13 +26,10 @@ cv2.createTrackbar("BMAX", "Trackbars", 255, 255, nothing)
 #### END OF YOUR CODE ####
 
 while True:
-    
-<<<<<<< HEAD
     # read the image lane.jpg
     image = cv2.imread(dir_path+'/lane.jpg')
-=======
     # read the image lane,jpg
->>>>>>> c10ef2e5839e23a395e35dd97336f674e6db72b5
+
     
     
     rmin = cv2.getTrackbarPos("RMIN", "Trackbars") # get the trackbar position for hue min
